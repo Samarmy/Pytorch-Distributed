@@ -5,6 +5,7 @@ import os
 import torch
 import torch.distributed as dist
 from torch.multiprocessing import Process
+import datetime
 
 from machines import machines
 
@@ -60,7 +61,7 @@ def init_process(rank, size, fn, backend='gloo'):
     os.environ['MASTER_ADDR'] = 'kenai'
     os.environ['MASTER_PORT'] = '13131'
     # store = torch.distributed.FileStore("/s/chopin/k/grad/sarmst/CR/store", size)
-    dist.init_process_group(backend, rank=rank, world_size=size)
+    dist.init_process_group(backend, timeout=datetime.timedelta(0, 18000), rank=rank, world_size=size)
     # dist.init_process_group(backend, init_method='tcp://kenai:13131', rank=rank, world_size=size)
     fn(rank, size)
 
