@@ -14,10 +14,8 @@ class BranchedTemporalDataset(data.Dataset):
 
     def __init__(self):
 
-        super(BranchedTemporalDataset, self).__init__()
         self.dir_AB = os.path.abspath("/s/chopin/k/grad/sarmst/CR/stgan/train_data/combined/train")
         self.AB_paths = sorted(self.make_dataset(self.dir_AB))  # get image paths
-        assert(286 >= 256)   # crop_size should be smaller than the size of loaded image
         self.input_nc = 3
         self.output_nc = 3
 
@@ -61,16 +59,16 @@ class BranchedTemporalDataset(data.Dataset):
         return {'crop_pos': (x, y), 'flip': flip}
 
 
-    def make_dataset(self, dir, max_dataset_size=float("inf")):
+    def make_dataset(self, dir):
         images = []
         assert os.path.isdir(dir), '%s is not a valid directory' % dir
-
+        # for root, _, fnames in sorted(os.walk(dir))[rangeStart:rangeEnd]:
         for root, _, fnames in sorted(os.walk(dir)):
             for fname in fnames:
                 if self.is_image_file(fname):
                     path = os.path.join(root, fname)
                     images.append(path)
-        return images[:min(max_dataset_size, len(images))]
+        return images
 
     def is_image_file(self, filename):
         return any(filename.endswith(extension) for extension in IMG_EXTENSIONS)

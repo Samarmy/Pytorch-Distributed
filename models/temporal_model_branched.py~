@@ -297,7 +297,7 @@ class ResnetBlock(nn.Module):
         self.conv_block = self.build_conv_block()
 
     def build_conv_block(self):
-        torch.manual_seed(18)
+    	  torch.manual_seed(18)
         return nn.Sequential(
             nn.ReflectionPad2d(1),
             nn.Conv2d(1024, 1024, kernel_size=(3, 3), stride=(1, 1), bias=False),
